@@ -30,7 +30,7 @@ jobs:
           ${{ runner.os }}-php-
 
     - name: Install dependencies
-      run: composer require govcms/govcms:dev-3.x-develop --prefer-dist --no-progress
+      run: composer create-project govcms/govcms:dev-3.x-develop ~/govcms --prefer-dist --no-progress
 
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
