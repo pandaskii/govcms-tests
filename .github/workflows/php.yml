@@ -37,3 +37,4 @@ jobs:
         cd ~/govcms
         ./bin/drush si govcms --db-url=sqlite://localhost/sites/default/files/.ht.sqlite --yes
         ./bin/drush st
+        curl localhost
