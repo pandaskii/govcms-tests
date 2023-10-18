@@ -15,9 +15,24 @@ jobs:
     container:
       image: govcmstesting/php:8.1-apache
     steps:
-    - name: Validate composer.json and composer.lock
+    - name: Install GovCMS dependencies
       run: |
-       ls -la
-       ls -la /var/www
+       composer create-project govcms/govcms ~/govcms
+       cd ~/govcms
+       composer config --no-plugins allow-plugins.phpstan/extension-installer 1
+       composer require --dev drupal/core-dev:"^10.1"
+       chown -R www-data:www-data web/sites
+       rm -rf tests
+    - name: Setup webserver
+      run: |
+       rm -rf /var/www/html
+       ln -sf ~/govcms/web /var/www/html
        service apache2 restart
-       curl localhost
+    - name: Install GovCMS site
+      run: |
+       cd ~/govcms
+       ./bin/drush site-install -y govcms --db-url=sqlite://localhost/sites/default/files/.ht.sqlite
+    - name: Run Cypress tests
+      run: |
+        curl localhost
+
