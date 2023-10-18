@@ -13,7 +13,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    container:
+      image: govcmstesting/php:8.1-apache
     steps:
     - uses: actions/checkout@v4
 
@@ -34,6 +35,8 @@ jobs:
 
     - name: Install GovCMS
       run: |
+        rm -rf /var/www/html
+        ln -sf ~/govcms /var/www/html
         cd ~/govcms
         ./bin/drush si govcms --db-url=sqlite://localhost/sites/default/files/.ht.sqlite --yes
         ./bin/drush st
