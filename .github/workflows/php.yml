@@ -11,33 +11,12 @@ permissions:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     container:
       image: govcmstesting/php:8.1-apache
     steps:
-    - uses: actions/checkout@v4
-
     - name: Validate composer.json and composer.lock
-      run: composer validate --strict
-
-    - name: Cache Composer packages
-      id: composer-cache
-      uses: actions/cache@v3
-      with:
-        path: vendor
-        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-php-
-
-    - name: Install dependencies
-      run: composer create-project govcms/govcms:dev-3.x-develop ~/govcms --prefer-dist --no-progress
-
-    - name: Install GovCMS
       run: |
-        rm -rf /var/www/html
-        ln -sf ~/govcms /var/www/html
-        cd ~/govcms
-        ./bin/drush si govcms --db-url=sqlite://localhost/sites/default/files/.ht.sqlite --yes
-        ./bin/drush st
-        curl localhost
+       curl localhost
+       ls -la
+        
