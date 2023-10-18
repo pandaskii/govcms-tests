@@ -35,5 +35,5 @@ jobs:
     - name: Install GovCMS
       run: |
         cd ~/govcms
-        ./drush si govcms --db-url=sqlite://localhost/sites/default/files/.ht.sqlite --yes
-        ./drush st
+        ./bin/drush si govcms --db-url=sqlite://localhost/sites/default/files/.ht.sqlite --yes
+        ./bin/drush st
