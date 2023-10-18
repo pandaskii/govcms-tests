@@ -32,8 +32,8 @@ jobs:
     - name: Install dependencies
       run: composer create-project govcms/govcms:dev-3.x-develop ~/govcms --prefer-dist --no-progress
 
-    # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
-    # Docs: https://getcomposer.org/doc/articles/scripts.md
-
-    # - name: Run test suite
-    #   run: composer run-script test
+    - name: Install GovCMS
+      run: |
+        cd ~/govcms
+        ./drush si govcms --db-url=sqlite://localhost/sites/default/files/.ht.sqlite --yes
+        ./drush st
