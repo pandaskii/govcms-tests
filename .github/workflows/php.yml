@@ -19,3 +19,5 @@ jobs:
       run: |
        ls -la
        ls -la /var/www
+       service apache2 restart
+       curl localhost
