@@ -17,6 +17,5 @@ jobs:
     steps:
     - name: Validate composer.json and composer.lock
       run: |
-       curl localhost
        ls -la
-        
+       ls -la /var/www
