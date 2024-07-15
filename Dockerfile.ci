@@ -1,6 +1,6 @@
 # Set the PHP and GovCMS versions as arguments
 ARG PHP_VERSION=8.3
-ARG GOVCMS_VERSION=10.x-latest
+ARG GOVCMS_VERSION=10.x-beta
 
 # Use multi-stage builds for better optimization
 FROM govcmstesting/tests:latest-php${PHP_VERSION} AS tests
@@ -13,11 +13,14 @@ WORKDIR /app/
 # Set environment variables
 ENV PATH="${PATH}:/app/tests/vendor/bin:/app/vendor/bin:/app/bin" \
     SIMPLETEST_BASE_URL="http://localhost" \
-    SIMPLETEST_DB="sqlite://sites/default/files/.ht.sqlite"
+    SIMPLETEST_DB="sqlite://sites/default/files/.ht.sqlite" \
+    APACHE_RUN_USER=govcms \
+    APACHE_RUN_GROUP=govcms
 
 # Create govcms user and set permissions, configure Apache
 RUN set -eux; \
     groupadd -r govcms && useradd -r -g govcms -G root,www-data govcms; \
+    mkdir -p /app/config/default && chown -R govcms:govcms /app; \
     mkdir -p /home/govcms/.cache/composer && chown -R govcms:govcms /home/govcms;
 
 # Copy govcms and test files with correct ownership
@@ -34,9 +37,12 @@ RUN set -eux; \
     echo '        AllowOverride All' >> /etc/apache2/sites-available/000-default.conf; \
     echo '        Require all granted' >> /etc/apache2/sites-available/000-default.conf; \
     echo '    </Directory>' >> /etc/apache2/sites-available/000-default.conf; \
-    echo '    ErrorLog ${APACHE_LOG_DIR}/error.log' >> /etc/apache2/sites-available/000-default.conf; \
-    echo '    CustomLog ${APACHE_LOG_DIR}/access.log combined' >> /etc/apache2/sites-available/000-default.conf; \
+    echo '    ErrorLog /dev/stderr' >> /etc/apache2/sites-available/000-default.conf; \
+    echo '    CustomLog /dev/stdout combined' >> /etc/apache2/sites-available/000-default.conf; \
     echo '</VirtualHost>' >> /etc/apache2/sites-available/000-default.conf
+
+# Expose port 80
+EXPOSE 80
 
 # Switch to govcms user
 USER govcms
