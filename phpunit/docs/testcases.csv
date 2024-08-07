@@ -14,6 +14,7 @@ SimplesamlphpAuthTest.php,testAutoProvisioningDisabled,"Test that auto-provision
 SimplesamlphpAuthTest.php,testCookiesOnlyOverHttps,"Test that cookies are only transmitted over HTTPS."
 SimplesamlphpAuthTest.php,testCookiesHttpOnly,"Test that cookies are set with the HttpOnly attribute."
 BlockUsersTest.php,"Class Doc","Checks that automatic block of old users works as expected."
+EventsLogTrackTest.php,"Class Doc","Test class for Event log track test functionality with GovCMS profile."
 JsonApiFileUploadTest.php,"Class Doc","Tests file upload via JSON API."
 JsonApiFileUploadTest.php,testFileUploadBlockedExtension,"Tests using the file upload POST route with blocked extensions."
 JsonApiFileUploadTest.php,testFileData,"Returns the expected JSON:API document for the expected file entity."
