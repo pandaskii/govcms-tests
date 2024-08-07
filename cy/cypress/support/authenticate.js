@@ -2,7 +2,7 @@
 
 // Drupal login.
 Cypress.Commands.add("drupalLogin", (user, password) => {
-    cy.visit('user/logout')
+    cy.drupalLogout()
     // Try obtaining login details from env file first
     user = user || Cypress.env('user').super.username
     password = password || Cypress.env('user').super.password
@@ -18,7 +18,17 @@ Cypress.Commands.add("drupalLogin", (user, password) => {
     cy.get("#edit-submit").click()
 });
 
-// Drupal logout.
+// Drupal logout with confirmation.
 Cypress.Commands.add('drupalLogout', () => {
-    return cy.request('/user/logout');
+    cy.request({
+        url: '/user/logout/confirm',
+        followRedirect: false,
+    }).then((res) => {
+        if (res.status === 200) {
+            cy.visit('/user/logout/confirm');
+            cy.get('#user-logout-confirm').submit();
+        } else {
+            cy.visit('/');
+        }
+    })
 });
