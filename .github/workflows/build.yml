@@ -1,8 +1,9 @@
+---
 name: Docker Image CI
 
-on:
+on:  # yamllint disable-line rule:truthy
   push:
-    branches: [ "3.x-develop" ]
+    branches: ["3.x-develop"]
   schedule:
     - cron: '0 0 * * *'
 

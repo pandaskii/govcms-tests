@@ -1,10 +1,11 @@
+---
 name: GovCMS CI Tests - PHPUnit
 
-on:
+on:  # yamllint disable-line rule:truthy
   push:
-    branches: [ "3.x-develop" ]
+    branches: ["3.x-develop"]
   pull_request:
-    branches: [ "3.x-develop" ]
+    branches: ["3.x-develop"]
 
 permissions:
   contents: read
@@ -25,33 +26,5 @@ jobs:
       - uses: actions/checkout@v4
       - name: Run PHPUnit tests
         run: |
-           docker exec ${{ job.services.web.id }} govcms-phpunit --testdox --testsuite govcms-integration
-  generate-docs:
-    permissions:
-      contents: write
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          ssh-key: ${{secrets.BYPASS_BRANCH_PROTECTION}}
-      - name: Set up PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.1' # specify the PHP version you need
-
-      - name: Run PHP script to generate Markdown
-        run: php phpunit/extract.php /home/runner/work/tests/tests/phpunit/integration/GovCMS
-
-      - name: Commit and push changes
-        run: |
-          mkdir -p ${{ github.workspace }}/phpunit/docs
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add ${{ github.workspace }}/phpunit/docs/
-          if ! git diff-index --quiet HEAD; then
-          git commit -m "Update generated docs"
-          git push
-          fi
-        #env:
-          #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          docker exec ${{ job.services.web.id }} \
+            govcms-phpunit --testdox --testsuite govcms-integration
