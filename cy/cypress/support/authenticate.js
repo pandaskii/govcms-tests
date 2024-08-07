@@ -9,7 +9,7 @@ Cypress.Commands.add("drupalLogin", (user, password) => {
     // If they cannot be found, use the default
     if (user == null || password == null) {
         user = "admin"
-        password = "123456"
+        password = "password"
     }
     // Attempt login
     cy.visit(`/user/login`)
